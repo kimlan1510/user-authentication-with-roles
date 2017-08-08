@@ -118,7 +118,7 @@ namespace BasicAuthentication.Controllers
 
             return View("ManageUserRoles");
         }
-
+        //get roles from user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetRoles(string UserName)
@@ -133,6 +133,28 @@ namespace BasicAuthentication.Controllers
                 ViewBag.Roles = list;
                 ViewBag.UserName = new SelectList(_db.Users, "UserName", "UserName");
             }
+            return View("ManageUserRoles");
+        }
+        //delete roles from user
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRoleForUser(string UserName, string Roles)
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(UserName);
+
+            if (await _userManager.IsInRoleAsync(user, Roles))
+            {
+                await _userManager.RemoveFromRoleAsync(user, Roles);
+            }
+            else
+            {
+                ViewBag.ResultMessage = "This user doesn't belong to selected role.";
+            }
+            // prepopulat roles for the view dropdown
+            var list = _db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+            ViewBag.UserName = new SelectList(_db.Users, "UserName", "UserName");
+
             return View("ManageUserRoles");
         }
     }
