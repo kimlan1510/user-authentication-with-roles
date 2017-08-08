@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace BasicAuthentication.Models
 {
     [Table("Items")]
-    public class Item
+    public class Items
     {
         [Key]
         public int Id { get; set; }

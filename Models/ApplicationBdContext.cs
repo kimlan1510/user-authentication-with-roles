@@ -18,6 +18,6 @@ namespace BasicAuthentication.Models
         {
             base.OnModelCreating(builder);
         }
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Items> Items { get; set; }
     }
 }
